@@ -1,0 +1,49 @@
+1. On page load, show the StartGame Button.
+2. On clicking the StartGame button
+	1. Start the countdown timer.
+	2. Show trivia questions with multiple choice options.
+
+3. Click on each of the multiple choice options to select the answer. [You will need to save these answers in variables
+	Question1_answer, Question2_answer etc]
+
+	create object of set of questions
+		var setOfQuestions = {
+			 set1 = {
+				question1:"",
+				option1:"",
+				option2:"",
+				ans:"",
+				option4:,
+				comapare function();
+
+			},
+			 set2 = {
+				question2:"",
+				option1:"",
+				option2:"",
+				ans:"",
+				option4:,
+				comapare function();
+			},
+
+		}
+
+4. If timer reaches to zero before all the questions are answered, Game Over. Show an option to Restart the game.
+
+5. Else if time has not reached 0 and the questions are not answered, keep capturing the answers.
+   Hit the done button.'
+   Once done button is hit, you should compare the answers with your expected answers, and show the score accordingly.
+
+6. Msg on submitting the done button
+	All Done!
+	Correct Answers: 
+	Incorrect Answers: 
+	Unanswered:
+	Accuracy?
+	Time taken?
+
+7. Should not let you choose more than 1 answer.
+
+Every 30 sec, execute function Trivia
+
+setInterval(trivia, 30000)

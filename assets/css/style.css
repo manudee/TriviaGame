@@ -1,0 +1,16 @@
+body{
+
+	background-image: url('../images/background.jpg');
+	height: 100%;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1{
+	text-align: center;
+}
+
+#startGame{
+	align-content: center;
+}
