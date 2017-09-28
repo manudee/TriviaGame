@@ -53,7 +53,7 @@ var triviaQ = [
 
 
 function startGame() {
-
+ $("#reset").hide();
   if(!gameStarted){
     triviaId = setInterval(decrement, 1000);
     gameStarted = true;
@@ -65,60 +65,56 @@ function startGame() {
 function stopGame() {
 
   clearInterval(triviaId);
-                   //remove it later and call it when user sees the statistics on answers submitted.
 
  }
 
  function reset(){
                 gameStarted = false;
-                $("#startGame").show();
                 triviaTime = 15;
                 correctAnswers = 0;
                 incorrectAnswers = 0;
                 unanswered = 0;
-              
+                $("#startGame").show();
                 $("#results").empty();
-                $("#reset").remove();
-
-               }
+                $("#reset").hide();
+}
 
 
 
 
  function decrement() {
                 triviaTime--;
+               
                 $("#triviaTime").html("<h2>" + "TimeRemaining:" +  triviaTime + "</h2>");
-                //$("#submit").show();
+              
                 if(triviaTime === 0)
                   stopGame();
 
-               }
+}
 
 
 
 function createQuiz(){
-                $("#startGame").hide();
-                for(i=0;i<triviaQ.length;i++){
-                  var html = $('<div>').addClass("question col-md-offset-5 game").appendTo('body');
-                  $(html).append(triviaQ[i].question)
-                  console.log(triviaQ[i].question)
+   
+//hide the startGame button once Quiz is created.
+   $("#startGame").hide();
+                
 
-                  for(j=0;j<triviaQ[i].answers.length;j++){
-                    console.log(triviaQ[i].answers.length)
-        //'<div class="answers">'+triviaQ[i].answers[j]+'</div>'
+    for(i=0;i<triviaQ.length;i++){
+         var html = $('<div>').addClass("question col-md-offset-5 game").appendTo('body');
+         $(html).append(triviaQ[i].question)
+          //console.log(triviaQ[i].question)
 
-        var ans =$('<div><input type="radio" id=answer'+i+j+' name=answer'+ i +'><label for=answer'+i+j+'>' + triviaQ[i].answers[j] +'</label></input></div>').addClass("answers col-md-offset-5 game").appendTo('body')
-        //$(ans).append(triviaQ[i].answers[j]);
-        console.log(triviaQ[i].answers[j]);
+           for(j=0;j<triviaQ[i].answers.length;j++){
+              //console.log(triviaQ[i].answers.length)
+              var ans =$('<div><input type="radio" id=answer'+i+j+' name=answer'+ i +'><label for=answer'+i+j+'>' + triviaQ[i].answers[j] +'</label></input></div>').addClass("answers col-md-offset-5 game").appendTo('body')
+              //console.log(triviaQ[i].answers[j]);
 
-    }
-
-
-
-
-
+          }
 }
 
+
+//Create the submit button on the fly once quiz is created
 $('<button id="submit" name="submit">Submit</button>').addClass("btn btn-primary btn-lg col-md-offset-5").appendTo('body');
 
 
@@ -130,61 +126,48 @@ function checkAnswer(){
 
 
   $('.question').each(function(i,obj){
-                                //var answerValue =$('input[name=answer'+i+']:checked').attr("id");
-                                //var answerValue = $('input[name=answer'+i+']:checked').attr("id");
+      
+        var answerValue = $('label[for="' + $('input[name=answer'+i+']:checked').attr("id") + '"]').text();
+         //console.log(answerValue);
+                               
+        var currAns = triviaQ[i].answers[triviaQ[i].correctAnswer];
+        //console.log("Correct Answer " + currAns);
 
-                                var answerValue = $('label[for="' + $('input[name=answer'+i+']:checked').attr("id") + '"]').text();
-                                console.log(answerValue);
-                                //console.log("HERE" + triviaQ[i].answers[2]);
-                                var currAns = triviaQ[i].answers[triviaQ[i].correctAnswer];
-
-                                console.log("Correct Answer " + currAns);
-
-                                if(answerValue === currAns){
-
-                                  correctAnswers++;
-                                                // console.log("number of correct answer:"+correctAnswers);
-                //                             console.log("number of Incorrect answer:"+unanswered);
-    //        console.log("number of unanswered questions:"+incorrectAnswers);
-}
-else if(!answerValue){
-  unanswered++;
-                                                // console.log("number of correct answer:"+correctAnswers);
-                //                            console.log("number of Incorrect answer:"+unanswered);
-    //        console.log("number of unanswered questions:"+incorrectAnswers);
-}
-else{
-  incorrectAnswers++;
-                                                // console.log("number of correct answer:"+correctAnswers);
-                //              console.log("number of Incorrect answer:"+unanswered);
-    //       console.log("number of unanswered questions:"+incorrectAnswers);
-}
+        if(answerValue === currAns)
+           correctAnswers++;  
+        else if(!answerValue)
+            unanswered++;
+        else
+            incorrectAnswers++;
 
 
-});
+      });
 
-  console.log("number of correct answer:"+correctAnswers);
-  console.log("number of Incorrect answer:"+incorrectAnswers);
-  console.log("number of unanswered questions:"+ unanswered);
-
-
-
-
+  // console.log("number of correct answer:"+correctAnswers);
+  // console.log("number of Incorrect answer:"+incorrectAnswers);
+  // console.log("number of unanswered questions:"+ unanswered);
 }
 
 
 
 function displayStats(){
 
+
+  //remove questions and answers from the div with class game once stats are displayed.
   $(".game").remove();
+ 
+  //remove submit button once stats are displayed
   $("#submit").remove();
-  //$("#startGame").hide();
+
+  //set triviaTime to 0 and call StopGame
   triviaTime = 0;
   stopGame();
+
+  //hide triviaTime div on displaying stats
   $("#triviaTime").hide();
 
-  
-
+  //empty the results before you append the stats. This is needed for subsequent games even if not needed for the 1st run
+  $("#results").empty();
 
   $( "#results").append(
     "<div><h2>All Done!!!</h2></div>",
@@ -192,10 +175,9 @@ function displayStats(){
     "<div><h2>Incorrect Answers: " + incorrectAnswers + "</h2></div>",
     "<div><h2>Unanswered: " + unanswered + "</h2></div>");
 
-  $('<button id="reset" name="reset">Reset</button>').addClass("btn btn-primary btn-lg col-md-offset-5").appendTo('body');
 
-  
-
+  //show the reset button to start a new game
+  $("#reset").show();
 
 
 }
@@ -204,33 +186,23 @@ function displayStats(){
 
 
 $(document).ready(function(){
+  //hide reset at the beginning
+           $("#reset").hide();
+  //on clicking start game, create the quiz and start the timer
+           $("#startGame").on("click", function(){
+                    createQuiz();
+                    startGame();
+  //on clicking submit check the answer to calculate variables and then call displaystats to show results.                  
+           $("body").on("click", "#submit", function(){
+                    checkAnswer();
+                    displayStats();
+ // on clicking reset start a new game after resetting all the variables.
+            $("body").on("click","#reset",function(){
+                  reset();
+            });
 
 
-
-  $("#startGame").on("click", function(){
-    createQuiz();
-    startGame();
-    
-    $("body").on("click", "#submit", function(){
-
-      checkAnswer();
-      displayStats();
-
-      $("body").on("click","#reset",function(){
-
-        reset();
-      });
-
-
+            });
     });
 
-    
-    
-
-  });
-
-
-
 });
-
-
