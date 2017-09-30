@@ -7,6 +7,8 @@ var incorrectAnswers = 0;
 var unanswered = 0;
 
 
+var submitClicked = false;
+
 //global object for trivia questions
 var triviaQ = [
 
@@ -87,8 +89,16 @@ function stopGame() {
                
                 $("#triviaTime").html("<h2>" + "TimeRemaining:" +  triviaTime + "</h2>");
               
-                if(triviaTime === 0)
+                if(triviaTime === 0){
                   stopGame();
+                  checkAnswer();
+                  displayStats();
+
+                }
+
+                $("body").on("click","#reset",function(){
+                  reset();
+            });
 
 }
 
@@ -120,6 +130,9 @@ $('<button id="submit" name="submit">Submit</button>').addClass("btn btn-primary
 
 
 }
+
+
+
 
 function checkAnswer(){
 
@@ -185,6 +198,7 @@ function displayStats(){
 
 
 
+
 $(document).ready(function(){
   //hide reset at the beginning
            $("#reset").hide();
@@ -192,8 +206,11 @@ $(document).ready(function(){
            $("#startGame").on("click", function(){
                     createQuiz();
                     startGame();
+
+
   //on clicking submit check the answer to calculate variables and then call displaystats to show results.                  
            $("body").on("click", "#submit", function(){
+                    submitClicked = true;
                     checkAnswer();
                     displayStats();
  // on clicking reset start a new game after resetting all the variables.
