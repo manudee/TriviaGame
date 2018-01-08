@@ -5,4 +5,4 @@ You are presented with set of questions. The timer starts when you start the gam
 
 
 ## Preview of the game
-![Alt Text](https://github.com/manudee/TriviaGame/assets/images/Trivia.gif)
+![Alt Text](/assets/images/Trivia.gif)
